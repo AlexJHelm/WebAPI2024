@@ -44,6 +44,28 @@ router.post('/saveGame', function(req,res){
     });
 });
 
+ //Search
+router.get("/getdata", function(req, res) {
+    var searchQuery = req.query.search ? { gamename: req.query.search } : {};
+
+    gameModel.find(searchQuery).then(function(games) {
+        res.json({ games });
+    }).catch(function(err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
+    });
+});
+
+// Sort
+router.get("/getdata", function(req, res) {
+    gameModel.sort({ gamename: 1 }).then(function(games) {
+        res.json({ games });
+    }).catch(function(err) {
+        console.error(err);
+        res.status(500).json({ error: "Internal Server Error" });
+    });
+});
+
 //Unity Data below
 router.post('/unity', function(req,res){
     console.log("Unity Posted Data: ");

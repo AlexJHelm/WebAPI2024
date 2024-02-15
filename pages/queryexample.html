@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Page</title>
+</head>
+<body>
+    <div id="container">
+        <h1>Search and Sort Games</h1>
+        <div id="search-sort-controls">
+            <input type="text" id="search-input" placeholder="Search games...">
+            <button id="search-button">Search</button>
+            <select id="sort-select">
+                <option value="name">Sort by Name</option>
+                <option value="studio">Sort by Studio</option>
+            </select>
+            <button id="sort-button">Sort</button>
+        </div>
+        <script>
+            document.getElementById('search-button').addEventListener('click', function() {
+                var searchQuery = document.getElementById('search-input').value;
+
+                fetchGames("/getdata?search=" + searchQuery);
+                console.log('searched');
+            });
+            document.getElementById('sort-button').addEventListener('click', function() {
+                var sortCriteria = document.getElementById('sort-select').value;
+                fetchGames("/getdata?sort=" + sortCriteria);
+                console.log('sorted');
+            });
+            function fetchGames(url) {
+                fetch(url).then(function(games){
+                    games.json().then(function(theGames){
+                        console.log(theGames);
+                        var container = document.getElementById("container");
+
+                        container.querySelectorAll('p, br').forEach(e => e.remove());
+                        for(let game of theGames.games) {
+                            var gameElement = document.createElement("p");
+                            gameElement.innerHTML = game.gamename;
+                            gameElement.innerHTML += " by " + game.gamestudio + " &nbsp &nbsp &nbsp ";
+                            container.appendChild(gameElement);
+                        }
+                    });
+                });
+            }
+            fetchGames("/getdata");
+        </script>
+    </div>
+</body>
+</html>

@@ -10,15 +10,19 @@
     <div id="container">
         <h1>Game List</h1>
         <script>
-            fetch("/getdata").then(function(games){
-                games.json().then(function(theGames){
-                    console.log(theGames);
-                    for(let game of theGames.games){
-                        //Creates the elements and adds them to the page.
-                        var gameElement = document.createElement('p');
-                        gameElement.innerHTML = game.gamename;
-                        gameElement.innerHTML += " by developer " + game.gamestudio + " &nbsp; &nbsp;";
-                        document.getElementById('container').appendChild(gameElement);
+
+            function fetchGames(url) {
+                fetch(url).then(function(games){
+                    games.json().then(function(theGames){
+                        console.log(theGames);
+                        var container = document.getElementById("container");
+
+                        container.querySelectorAll('p, br').forEach(e => e.remove());
+                        for(let game of theGames.games) {
+                            var gameElement = document.createElement("p");
+                            gameElement.innerHTML = game.gamename;
+                            gameElement.innerHTML += " by " + game.gamestudio + " &nbsp &nbsp &nbsp ";
+                            container.appendChild(gameElement);
 
                         var deleteButton = document.createElement('button');
                         deleteButton.innerText = "Delete Game";
@@ -32,7 +36,7 @@
                                     "Content-Type":"application/json"
                                 },
                                 body:JSON.stringify({game:game})
-                            })
+                            });
                         })
 
                         gameElement.appendChild(deleteButton);
@@ -47,6 +51,9 @@
                     }
                 })
             })
+        }
+
+        fetchGames("/getdata");
         </script>
     </div>
 </body>
