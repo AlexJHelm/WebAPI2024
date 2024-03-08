@@ -2,16 +2,24 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var UnityGameData = new Schema({
-    level:{
+    screenName:{
+        type:string,
+        required:true
+    },
+    firstName:{
+        type:string,
+        required:true
+    },
+    lastName:{
+        type:string,
+        required:true
+    },
+    date:{
         type:Number,
         required:true
     },
-    timeElapsed:{
+    score:{
         type:Number,
-        required:true
-    },
-    name:{
-        type:String,
         required:true
     }
 });
